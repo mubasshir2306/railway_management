@@ -2,105 +2,20 @@ import database
 from psycopg2 import Error
 import datetime
 from trainRelatedQueries import find_all_trains, show_fares, get_station_code
-from tabulate import tabulate
-
-
-def check_userid(shouldnot: bool = False):
-    while True:
-        userid = input("Enter a UserID: ").lower()
-        if len(userid) == 0:
-            print("Please enter a valid UserID!")
-        elif len(userid) > 20:
-            print("Please enter a UserID with not more than 20 characters!")
-        elif ' ' in userid:
-            print("Please enter a UserID without any space(s)")
-        else:
-            field = 'userid'
-            exists = database.check_if_exists(field, userid)
-            if not shouldnot:
-                if exists:
-                    print("UserID already taken. Please enter a different UserID.")
-                else:
-                    return userid
-            else:
-                if exists:
-                    return userid
-                else:
-                    print("This UserID does not exists. Please check your UserID and try again.")
-
-
-def check_mobileno(userid:str = None, shouldnot:bool = False):
-    while True:
-        try:
-            mobileno = int(input("Enter your Mobile Number: "))
-        except ValueError:
-            print("Please Enter a Valid Mobile Number!")
-            continue
-        else:
-            if len(str(mobileno)) > 10 or len(str(mobileno)) < 10:
-                print("Please Enter a Valid 10 Digit Mobile Number!")
-            else:
-                field = 'mobileno'
-                exists = database.check_if_exists(field, mobileno)
-                if not shouldnot:
-                    if exists:
-                        print("This Mobile Number already taken. Please enter a different Mobile Number.")
-                    else:
-                        if len(str(mobileno)) == 10 and mobileno != 0000000000:
-                            return mobileno
-                        else:
-                            print("Enter a valid Mobile Number")
-                else:
-                    if exists:
-                        if exists[0][1] == userid:
-                            return mobileno
-                        else:
-                            print(f"This Mobile Number does not match with the "
-                                  f"Mobile Number registered with UserID: {userid}\n"
-                                  "Please check the Mobile Number and try again!")
-                    else:
-                        print(f"This Mobile Number does not match with the "
-                                  f"Mobile Number registered with UserID: {userid}\n"
-                                  "Please check the Mobile Number and try again!")
+from utils import check_mobileno, check_userid, check_name, check_age, check_sex
 
 
 def create_user():
 
     userid = check_userid()
 
-    while True:
-        fullname = input("Enter your Full Name: ")
-        if len(fullname) == 0:
-            print("Please enter a valid Name!")
-        elif len(fullname) > 40:
-            print("Name too long!")
-        else:
-            fullname = fullname.upper()
-            break
+    fullname = check_name()
 
     mobileno = check_mobileno()
 
-    while True:
-        try:
-            age = int(input("Enter your age: "))
-        except ValueError:
-            print("Please Enter a Valid Age. ")
-            continue
-        else:
-            if age < 18:
-                print("You must be at-least 18 years old! ")
-            elif age > 100:
-                print("Maximum allowed age is 100 years!")
-            else:
-                break
+    age = check_age()
 
-    while True:
-        sex = input("Enter your sex(M/F/OTH): ")
-        if sex.upper() == 'M' or sex.upper() == 'F' or sex.upper() == 'OTH':
-            sex = sex.upper()
-            break
-        else:
-            print("Please enter one of the given options: M/F/OTH ")
+    sex = check_sex()
 
     try:
         database.create_user(userid, fullname, mobileno, age, sex)

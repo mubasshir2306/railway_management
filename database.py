@@ -98,12 +98,14 @@ def create_user(userid, fullname, mobileno, age, sex):
                         , (userid, fullname, mobileno, age, sex))
 
 
-def check_if_exists(field, arg):
+def check_if_exists(table, field, arg):
+    table = str(table)
     field = str(field)
     arg = str(arg)
     with get_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute(sql.SQL("SELECT * FROM users WHERE {} = {}").format(
+            cur.execute(sql.SQL("SELECT * FROM {} WHERE {} = {}").format(
+                sql.Identifier(table),
                 sql.Identifier(field),
                 sql.Literal(arg)
             ))

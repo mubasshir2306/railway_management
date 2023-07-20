@@ -1,6 +1,6 @@
 import time
 from trainRelatedQueries import find_all_trains, get_train_info_by_train_no, show_fares, get_station_code
-from userFunctions import create_user
+from userFunctions import create_user, book_tickets
 
 # def time_delay():
 #     time.sleep(2)
@@ -17,7 +17,7 @@ def main_menu():
             "3. Check Fares from starting station to destination station.\n"
             "4. Search station code by city name.\n"
             "5. SignUp/Create New User.\n"
-            "6. Delete User.\n"
+            "6. Book Tickets.\n"
             "X. Close\n"
             )
 
@@ -38,6 +38,8 @@ def main_menu():
             # time_delay()
         elif n == '5':
             create_user()
+        elif n == '6':
+            book_tickets()
 
     print("\nThankyou!\n")
 

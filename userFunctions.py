@@ -1,12 +1,12 @@
 import database
 from psycopg2 import Error
+import datetime
+from trainRelatedQueries import find_all_trains, show_fares, get_station_code
 from tabulate import tabulate
 
 
-def create_user():
-
+def check_userid(shouldnot: bool = False):
     while True:
-        field = 'userid'
         userid = input("Enter a UserID: ").lower()
         if len(userid) == 0:
             print("Please enter a valid UserID!")
@@ -15,22 +15,21 @@ def create_user():
         elif ' ' in userid:
             print("Please enter a UserID without any space(s)")
         else:
+            field = 'userid'
             exists = database.check_if_exists(field, userid)
-            if exists:
-                print("UserID already taken. Please enter a different UserID.")
+            if not shouldnot:
+                if exists:
+                    print("UserID already taken. Please enter a different UserID.")
+                else:
+                    return userid
             else:
-                break
+                if exists:
+                    return userid
+                else:
+                    print("This UserID does not exists. Please check your UserID and try again.")
 
-    while True:
-        fullname = input("Enter your Full Name: ")
-        if len(fullname) == 0:
-            print("Please enter a valid Name!")
-        elif len(fullname) > 40:
-            print("Name too long!")
-        else:
-            fullname = fullname.upper()
-            break
 
+def check_mobileno(userid:str = None, shouldnot:bool = False):
     while True:
         try:
             mobileno = int(input("Enter your Mobile Number: "))
@@ -43,13 +42,43 @@ def create_user():
             else:
                 field = 'mobileno'
                 exists = database.check_if_exists(field, mobileno)
-                if exists:
-                    print("This Mobile Number already taken. Please enter a different Mobile Number.")
-                else:
-                    if len(str(mobileno)) == 10 and mobileno != 0000000000:
-                        break
+                if not shouldnot:
+                    if exists:
+                        print("This Mobile Number already taken. Please enter a different Mobile Number.")
                     else:
-                        print("Enter a valid Mobile Number")
+                        if len(str(mobileno)) == 10 and mobileno != 0000000000:
+                            return mobileno
+                        else:
+                            print("Enter a valid Mobile Number")
+                else:
+                    if exists:
+                        if exists[0][1] == userid:
+                            return mobileno
+                        else:
+                            print(f"This Mobile Number does not match with the "
+                                  f"Mobile Number registered with UserID: {userid}\n"
+                                  "Please check the Mobile Number and try again!")
+                    else:
+                        print(f"This Mobile Number does not match with the "
+                                  f"Mobile Number registered with UserID: {userid}\n"
+                                  "Please check the Mobile Number and try again!")
+
+
+def create_user():
+
+    userid = check_userid()
+
+    while True:
+        fullname = input("Enter your Full Name: ")
+        if len(fullname) == 0:
+            print("Please enter a valid Name!")
+        elif len(fullname) > 40:
+            print("Name too long!")
+        else:
+            fullname = fullname.upper()
+            break
+
+    mobileno = check_mobileno()
 
     while True:
         try:
@@ -78,3 +107,43 @@ def create_user():
         print("\nUser created successfully\n")
     except Error:
         print(f"\nAn error occurred, Please try again later. \n")
+
+
+def book_tickets():
+
+    current_date = datetime.date.today()
+    max_date = current_date + datetime.timedelta(days=60)
+
+    print(
+        "\nSome Important Information Regarding Ticket Bookings:\n"
+        "- You must be a Registered User.\n"
+        "- A Registered User can Book Tickets for a Maximum of 5 Different Journeys.\n"
+        "- A Ticket can be Booked 2 Months before the Actual Trip.\n"
+        "- Please make sure to know Train Number, Starting Station Code and Destination "
+        "Station Code before proceeding to Bookings.\n"
+        "\nFollowing options may help you:"
+    )
+
+    n = "no_op"
+    while n.upper().strip() != 'X':
+        print(
+            "\nPress 1 to Check Trains.\n"
+            "Press 2 to Check Fares.\n"
+            "Press 3 to know Station Codes.\n"
+            "Press X to continue to booking."
+        )
+
+        n = input("Enter your choice: ")
+
+        if n == '1':
+            find_all_trains()
+        if n == '2':
+            show_fares()
+        if n == '3':
+            get_station_code()
+
+    userid = check_userid(shouldnot=True)
+    mobileno = check_mobileno(userid=userid, shouldnot=True)
+
+    print("\nBooking Started...")
+

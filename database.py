@@ -110,3 +110,9 @@ def check_if_exists(field, arg):
             res = cur.fetchall()
             if res:
                 return res
+
+
+def delete_user(userid, mobileno):
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("DELETE FROM users WHERE userid = %s AND mobileno = %s;", (userid, mobileno))

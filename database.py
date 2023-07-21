@@ -44,6 +44,47 @@ def show_all_trains(start: str, destination: str):
                 return [TrainDist(*t) for t in res]
 
 
+def check_train_from_to_end(train_no, start, destination):
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                DROP TABLE IF EXISTS starting;
+                DROP TABLE IF EXISTS destination;
+                CREATE TEMPORARY TABLE IF NOT EXISTS starting(
+                    train_no INTEGER,
+                    distance INTEGER,
+                    departure_time TEXT
+                );
+                CREATE TEMPORARY TABLE IF NOT EXISTS destination(
+                    train_no INTEGER,
+                    distance INTEGER,
+                    arrival_time TEXT
+                );
+
+                INSERT INTO starting(train_no, distance, departure_time)
+                SELECT train_no, distance, departure_time FROM train_routes WHERE station_code = %s;
+
+                INSERT INTO destination(train_no, distance, arrival_time)
+                SELECT train_no, distance, arrival_time FROM train_routes WHERE station_code = %s;
+
+                SELECT DISTINCT s.train_no, ti.train_name, s.departure_time, d.arrival_time,(d.distance-s.distance) 
+                AS distance_bw_stations
+                FROM starting AS s
+                INNER JOIN destination AS d
+                ON s.train_no = d.train_no
+                INNER JOIN train_info AS ti
+                ON s.train_no = ti.train_no
+                WHERE (d.distance - s.distance > 0) AND s.train_no = %s
+                ORDER BY s.train_no;
+                """, (start, destination, train_no)
+            )
+            res = cur.fetchall()
+
+            if res:
+                return [TrainDist(*t) for t in res]
+
+
 def show_train_info(train_no: str):
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -98,17 +139,27 @@ def create_user(userid, fullname, mobileno, age, sex):
                         , (userid, fullname, mobileno, age, sex))
 
 
-def check_if_exists(table, field, arg):
+def check_if_exists(table, field, arg, and_where: dict = None):
     table = str(table)
     field = str(field)
     arg = str(arg)
     with get_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute(sql.SQL("SELECT * FROM {} WHERE {} = {}").format(
+            query = sql.SQL("SELECT * FROM {} WHERE {} = {}").format(
                 sql.Identifier(table),
                 sql.Identifier(field),
                 sql.Literal(arg)
-            ))
+            )
+
+            if and_where:
+                for key in and_where:
+                    k = key
+                    v = and_where.get(k)
+                query += sql.SQL(" AND {} = {}").format(
+                    sql.Identifier(k), sql.Literal(v)
+                )
+
+            cur.execute(query)
             res = cur.fetchall()
             if res:
                 return res

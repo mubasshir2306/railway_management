@@ -121,6 +121,20 @@ def get_fares(train_no: str, start: str, end: str):
                 return [Fares(*f) for f in res]
 
 
+def get_time(train_no, station_code, time):
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(sql.SQL("SELECT {} FROM train_routes WHERE train_no = {} AND station_code = {}").format(
+                sql.Identifier(time),
+                sql.Literal(train_no),
+                sql.Literal(station_code)
+            ))
+            res = cur.fetchall()
+
+            if res:
+                return res[0][0]
+
+
 def get_station_code(station_name: str):
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -165,7 +179,13 @@ def check_if_exists(table, field, arg, and_where: dict = None):
                 return res
 
 
-def delete_user(userid, mobileno):
+def book_ticket(ticket_no, userid, pnr, train_no, start_st_code, dest_st_code, date_of_journey, departure_time,
+                arrival_time, passenger_name, passenger_age, passenger_sex, class_name, status):
     with get_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute("DELETE FROM users WHERE userid = %s AND mobileno = %s;", (userid, mobileno))
+            cur.execute("""INSERT INTO bookings(
+            ticket_no, userid, pnr, train_no, start_st_code, dest_st_code, date_of_journey, departure_time, 
+            arrival_time, passenger_name, passenger_age, passenger_sex, class_name, status)
+            values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+            """, (ticket_no, userid, pnr, train_no, start_st_code, dest_st_code, date_of_journey, departure_time,
+                  arrival_time, passenger_name, passenger_age, passenger_sex, class_name, status))

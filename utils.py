@@ -30,12 +30,17 @@ def get_connection():
 def check_userid(shouldnot: bool = False):
     while True:
         userid = input("Enter a UserID: ").lower()
-        if len(userid) == 0:
+        match = string.ascii_letters + string.digits + '_'
+        if ' ' in userid:
+            print("Please enter a UserID without any space(s)!")
+        elif not all([x in match for x in userid]):
+            print("UserID must only contain Alphabets, Numbers and Underscore.")
+        elif len(userid) == 0:
             print("Please enter a valid UserID!")
-        elif len(userid) > 20:
-            print("Please enter a UserID with not more than 20 characters!")
-        elif ' ' in userid:
-            print("Please enter a UserID without any space(s)")
+        elif len(userid) < 6 or len(userid) > 20:
+            print("Please enter a UserID with between 6 to 20 characters!")
+        elif not userid[0].isalpha():
+            print("UserID must start with a letter.")
         else:
             table = 'users'
             field = 'userid'
@@ -91,7 +96,7 @@ def check_mobileno(userid: str = None, shouldnot: bool = False):
 def check_name():
     while True:
         fullname = input("Enter your Full Name: ")
-        if len(fullname) == 0:
+        if fullname.replace(" ", "").isalpha() == 0:
             print("Please enter a valid Name!")
         elif len(fullname) > 40:
             print("Name too long!")
@@ -225,3 +230,25 @@ def check_date(date):
         date = datetime.datetime.strptime(date, "%d-%m-%Y")
         date = date.date()
         return
+
+
+def get_num_pass():
+    while True:
+        try:
+            num_pass = int(input("Enter the Number of Passengers: "))
+        except ValueError:
+            print("Enter a Valid Number!")
+            continue
+        else:
+            if num_pass <= 0 or num_pass > 5:
+                print("Please enter a number between 1 and 5.")
+            else:
+                return num_pass
+
+
+def get_passenger_details():
+    name = check_name()
+    age = check_age()
+    sex = check_sex()
+    return name, age, sex
+

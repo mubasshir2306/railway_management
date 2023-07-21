@@ -187,10 +187,41 @@ def generate_ticket_no():
 def get_date():
     while True:
         try:
-            date = input("Enter the Date of Journey(YYYY-MM-DD): ")
-            date_journey = datetime.datetime.strptime(date, "%Y-%m-%d").date()
+            date = input("Enter the Date of Journey(DD-MM-YYYY): ")
+            date_journey = datetime.datetime.strptime(date, "%d-%m-%Y").date()
             return date_journey
         except ValueError:
             print("Please Enter the Correct Date!")
 
 
+def get_class():
+    print(
+        "Please Enter The Class Name\n"
+        "Press 1AC for First AC.\n"
+        "Press 2AC for 2 Tier AC.\n"
+        "Press 3AC for 3 Tier AC.\n"
+        "Press SL for Sleeper.\n"
+    )
+    while True:
+        class_name = input("Enter the Class: ")
+        if class_name.upper().strip() == '1AC' or class_name.upper().strip() == '2AC' \
+                or class_name.upper().strip() == '3AC' or class_name.upper().strip() == 'SL':
+            class_name = class_name.upper().strip()
+            return class_name
+        else:
+            print("Please Enter the Correct Class(1AC/2AC/3AC/SL): ")
+
+
+def check_date(date):
+    today = datetime.date.today()
+    d1 = today.strftime("%d-%m-%Y")
+    max_date = today + datetime.timedelta(days=60)
+    d2 = max_date.strftime("%d-%m-%Y")
+
+    while date < datetime.datetime.strptime(d1, "%d-%m-%Y").date() or \
+            date > datetime.datetime.strptime(d2, "%d-%m-%Y").date():
+        print(f"Please enter a Date Between {d1} And {d2}")
+        date = input("Date(DD-MM-YYYY): ")
+        date = datetime.datetime.strptime(date, "%d-%m-%Y")
+        date = date.date()
+        return

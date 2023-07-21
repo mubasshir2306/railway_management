@@ -1,9 +1,8 @@
 import database
 from psycopg2 import Error
-import datetime
 from trainRelatedQueries import find_all_trains, show_fares, get_station_code, check_if_route_exists
 from utils import check_mobileno, check_userid, check_name, check_age, check_sex, check_train_number, \
-    check_station_code_with_train_no, generate_pnr, generate_ticket_no, get_date
+    check_station_code_with_train_no, generate_pnr, generate_ticket_no, get_date, get_class, check_date
 
 
 def create_user():
@@ -23,9 +22,6 @@ def create_user():
 
 def book_tickets():
 
-    current_date = datetime.date.today()
-    max_date = current_date + datetime.timedelta(days=60)
-
     print(
         "\nSome Important Information Regarding Ticket Bookings:\n"
         "- You must be a Registered User.\n"
@@ -44,9 +40,7 @@ def book_tickets():
             "Press 3 to know Station Codes.\n"
             "Press X to continue to booking."
         )
-
         n = input("Enter your choice: ")
-
         if n == '1':
             find_all_trains()
         if n == '2':
@@ -67,12 +61,8 @@ def book_tickets():
         ticket_no = generate_ticket_no()
         pnr = generate_pnr()
         date = get_date()
-        while date < current_date or date > max_date:
-            print("Please enter a Valid Date!")
-            date = input("Date(DD/MM/YYYY): ")
-            date = datetime.datetime.strptime(date, "%Y-%m-%d")
-            date = date.date()
-        
+        check_date(date)
+        class_name = get_class()
 
 
 

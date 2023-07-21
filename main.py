@@ -1,9 +1,5 @@
-import time
 from trainRelatedQueries import find_all_trains, get_train_info_by_train_no, show_fares, get_station_code
 from userFunctions import create_user, book_tickets
-
-# def time_delay():
-#     time.sleep(2)
 
 
 def main_menu():
@@ -26,16 +22,12 @@ def main_menu():
         if n == '1':
             print("Choice 1 selected")
             find_all_trains()
-            # time_delay()
         elif n == '2':
             get_train_info_by_train_no()
-            # time_delay()
         elif n == '3':
             show_fares()
-            # time_delay()
         elif n == '4':
             get_station_code()
-            # time_delay()
         elif n == '5':
             create_user()
         elif n == '6':

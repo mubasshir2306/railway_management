@@ -1,6 +1,8 @@
 import database
 from psycopg2 import Error
 from tabulate import tabulate
+import datetime
+import time
 from trainRelatedQueries import find_all_trains, show_fares, get_station_code, check_if_route_exists
 from utils import check_mobileno, check_userid, check_name, check_age, check_sex, check_train_number, \
     check_station_code_with_train_no, generate_pnr, generate_ticket_no, get_date, get_class, check_date, \
@@ -99,18 +101,20 @@ def show_booking():
         if not res:
             print("No Bookings Found!")
         else:
+            date = res[0][6]
+            d1 = datetime.datetime.strptime(date, "%Y-%m-%d").date()
+            d2 = d1.strftime("%d-%m-%Y")
             print('\n'
                   f"Ticket Number:   {res[0][0]}\n"
                   f"PNR Number:      {res[0][2]}\n"
                   f"Train Number:    {res[0][3]}\n"
                   f"Train Name:      {res[0][14]}\n"
                   f"From:            {res[0][4]} To {res[0][5]}\n"
-                  f"Date of Journey: {res[0][6]}\n"
+                  f"Date of Journey: {d2}\n"
                   f"Departure Time:  {res[0][7]}\n"
                   f"Arrival Time:    {res[0][8]}\n"
                   "Passengers Details:"
                   )
-            # print(res)
             passengers = []
             for i in range(len(res)):
                 single_pass = []
@@ -120,8 +124,9 @@ def show_booking():
             # print(passengers)
             print(tabulate(passengers,
                            headers=["Name", "Age", "Sex", "Class", "Status"],
-                           tablefmt='simple_outline') + '\n'
+                           tablefmt='simple_outline')
                   )
+            time.sleep(3)
 
 
 def cancel_bookings():

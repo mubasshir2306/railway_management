@@ -179,6 +179,15 @@ def check_if_exists(table, field, arg, and_where: dict = None):
                 return res
 
 
+def check_max_bookings(userid: str):
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT COUNT(DISTINCT pnr) FROM bookings WHERE userid = %s;", (userid,))
+            res = cur.fetchall()
+            ans = (res[0][0])
+            return ans
+
+
 def book_ticket(ticket_no, userid, pnr, train_no, start_st_code, dest_st_code, date_of_journey, departure_time,
                 arrival_time, passenger_name, passenger_age, passenger_sex, class_name, status):
     with get_connection() as conn:

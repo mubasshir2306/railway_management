@@ -51,34 +51,34 @@ def book_tickets():
             get_station_code()
 
     userid = check_userid(shouldnot=True)
-    check_mobileno(userid=userid, shouldnot=True)
-    train_no = check_train_number()
-    start_station_code = check_station_code_with_train_no(train_no, 'Starting')
-    end_station_code = check_station_code_with_train_no(train_no, 'Destination')
-    exists = check_if_route_exists(train_no, start_station_code, end_station_code)
-    if not exists:
-        print("Returning to Main Menu...")
-        return
+    if database.check_max_bookings(userid) < 5:
+        check_mobileno(userid=userid, shouldnot=True)
+        train_no = check_train_number()
+        start_station_code = check_station_code_with_train_no(train_no, 'Starting')
+        end_station_code = check_station_code_with_train_no(train_no, 'Destination')
+        exists = check_if_route_exists(train_no, start_station_code, end_station_code)
+        if not exists:
+            print("Returning to Main Menu...")
+            return
+        else:
+            departure_time = database.get_time(train_no, start_station_code, 'departure_time')
+            arrival_time = database.get_time(train_no, end_station_code, 'arrival_time')
+            ticket_no = generate_ticket_no()
+            pnr = generate_pnr()
+            date = get_date()
+            check_date(date)
+            class_name = get_class()
+            num_pass = get_num_pass()
+            for num in range(num_pass):
+                passenger = get_passenger_details(num)
+                status = 'CNF'
+                database.book_ticket(ticket_no, userid, pnr, train_no, start_station_code, end_station_code, date,
+                                     departure_time, arrival_time, passenger[0], passenger[1], passenger[2], class_name,
+                                     status)
+                print(f"Passenger {num + 1} added successfully!")
+
+            print(f"\nTicket Booked!")
+            print(f"Your PNR is: {pnr}")
     else:
-        departure_time = database.get_time(train_no, start_station_code, 'departure_time')
-        arrival_time = database.get_time(train_no, end_station_code, 'arrival_time')
-        ticket_no = generate_ticket_no()
-        pnr = generate_pnr()
-        date = get_date()
-        check_date(date)
-        class_name = get_class()
-        num_pass = get_num_pass()
-        for num in range(num_pass):
-            passenger = get_passenger_details()
-            status = 'CNF'
-            database.book_ticket(ticket_no, userid, pnr, train_no, start_station_code, end_station_code, date,
-                                 departure_time, arrival_time, passenger[0], passenger[1], passenger[2], class_name,
-                                 status)
-            print(f"Passenger {num+1} added successfully!")
-
-        print(f"\nTicket Booked!")
-        print(f"Your PNR is: {pnr}")
-
-
-
-
+        print("Cannot Proceed with Booking. Maximum Booking Limit Reached!")
+        return

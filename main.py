@@ -14,6 +14,8 @@ def main_menu():
             "4. Search station code by city name.\n"
             "5. SignUp/Create New User.\n"
             "6. Book Tickets.\n"
+            "7. Show Bookings.\n"
+            "8. Cancel Bookings.\n"
             "X. Close\n"
             )
 

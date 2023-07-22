@@ -96,7 +96,8 @@ def check_mobileno(userid: str = None, shouldnot: bool = False):
 def check_name():
     while True:
         fullname = input("Enter your Full Name: ")
-        if fullname.replace(" ", "").isalpha() == 0:
+        match = string.ascii_letters + '.' + ' '
+        if not all([x in match for x in fullname]):
             print("Please enter a valid Name!")
         elif len(fullname) > 40:
             print("Name too long!")
@@ -240,13 +241,16 @@ def get_num_pass():
             print("Enter a Valid Number!")
             continue
         else:
-            if num_pass <= 0 or num_pass > 5:
+            if num_pass > 5:
+                print("Maximum 5 Passengers are allowed in One Ticket!")
+            elif num_pass <= 0:
                 print("Please enter a number between 1 and 5.")
             else:
                 return num_pass
 
 
-def get_passenger_details():
+def get_passenger_details(num):
+    print(f"Enter Details of Passenger {num+1}: ")
     name = check_name()
     age = check_age()
     sex = check_sex()

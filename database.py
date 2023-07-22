@@ -198,3 +198,9 @@ def book_ticket(ticket_no, userid, pnr, train_no, start_st_code, dest_st_code, d
             values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
             """, (ticket_no, userid, pnr, train_no, start_st_code, dest_st_code, date_of_journey, departure_time,
                   arrival_time, passenger_name, passenger_age, passenger_sex, class_name, status))
+
+
+def cancel_booking(userid, pnr):
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("DELETE FROM bookings WHERE userid = %s AND pnr = %s;", (userid, pnr))

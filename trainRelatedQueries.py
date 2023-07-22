@@ -18,7 +18,7 @@ def find_all_trains():
                               tablefmt='heavy_outline') + '\n'
               )
     else:
-        print(f"\nSorry, No trains found connecting {start} and {end}. "
+        print(f"\nSorry, No trains found connecting '{start}' and '{end}'. "
               f"Please check station codes or search for trains from different stations.\n")
 
 
@@ -43,7 +43,7 @@ def show_fares():
     if exists:
         fares = database.get_fares(train_no, start, end)
         if fares:
-            print("The fares for different classes are: ")
+            print(f"The fares for different classes for Train Number: '{train_no}' are: ")
             print('\n' + tabulate(fares,
                                   headers=["Train No.", "Train Name", "First AC", "Second AC", "Third AC", "Sleeper"],
                                   tablefmt='heavy_outline') + '\n'
@@ -67,8 +67,8 @@ def get_station_code():
 def check_if_route_exists(train_no, start_station_code, end_station_code):
     does_route_exists = database.check_train_from_to_end(train_no, start_station_code, end_station_code)
     if not does_route_exists:
-        print(f"\nTrain Number {train_no} Does Not Run From {start_station_code} To {end_station_code}!\n"
-              f"It Runs From {end_station_code} To {start_station_code}")
+        print(f"\nTrain Number '{train_no}' Does Not Run From '{start_station_code}' To '{end_station_code}'\n"
+              f"It Runs From '{end_station_code}' To '{start_station_code}'")
         return False
     else:
         return True

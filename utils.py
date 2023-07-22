@@ -256,3 +256,28 @@ def get_passenger_details(num):
     sex = check_sex()
     return name, age, sex
 
+
+def check_pnr():
+    while True:
+        pnr = input("Enter the PNR Number of Your Booking: ")
+        match = string.digits + '-'
+        if not all([x in match for x in pnr]):
+            print("Please enter a valid PNR Number!")
+        elif len(pnr) != 11:
+            print("Please enter a valid PNR Number!")
+        elif pnr[3] != '-':
+            print("Please enter a valid PNR Number!")
+        else:
+            spnr = ''
+            und = ''
+            for i in range(len(pnr)):
+                if pnr[i] != '-':
+                    spnr += pnr[i]
+                else:
+                    und += pnr[i]
+            if len(spnr) != 10:
+                print("Please enter a valid PNR Number!")
+            elif und != '-':
+                print("Please enter a valid PNR Number!")
+            else:
+                return pnr

@@ -3,7 +3,7 @@ from psycopg2 import Error
 from trainRelatedQueries import find_all_trains, show_fares, get_station_code, check_if_route_exists
 from utils import check_mobileno, check_userid, check_name, check_age, check_sex, check_train_number, \
     check_station_code_with_train_no, generate_pnr, generate_ticket_no, get_date, get_class, check_date, \
-    get_num_pass, get_passenger_details
+    get_num_pass, get_passenger_details, check_pnr
 
 
 def create_user():
@@ -78,7 +78,28 @@ def book_tickets():
                 print(f"Passenger {num + 1} added successfully!")
 
             print(f"\nTicket Booked!")
-            print(f"Your PNR is: {pnr}")
+            print(
+                f"Your PNR Number is: {pnr}\n"
+                "Please note down your PNR Number as it is used to Check Bookings and Delete Bookings."
+                )
     else:
         print("Cannot Proceed with Booking. Maximum Booking Limit Reached!")
         return
+
+
+def cancel_bookings():
+    userid = check_userid(shouldnot=True)
+    check_mobileno(userid=userid, shouldnot=True)
+    pnr = check_pnr()
+    exists = database.check_if_exists('bookings', 'pnr', pnr, and_where={'userid': userid})
+    if not exists:
+        print(f"UserID: '{userid}' does Not have a booking with PNR Number: '{pnr}'")
+        return
+    else:
+        res = input("Are Your Sure You Want To Cancel This Booking? (Y/N): ")
+        if res.upper().strip() == 'Y':
+            database.cancel_booking(userid, pnr)
+            print(f"\nSuccessfully Cancelled Booking For PNR Number: '{pnr}'")
+        else:
+            print("\nCancellation Aborted!")
+

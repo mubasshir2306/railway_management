@@ -1,5 +1,5 @@
 from trainRelatedQueries import find_all_trains, get_train_info_by_train_no, show_fares, get_station_code
-from userFunctions import create_user, book_tickets
+from userFunctions import create_user, book_tickets, cancel_bookings
 
 
 def main_menu():
@@ -34,6 +34,10 @@ def main_menu():
             create_user()
         elif n == '6':
             book_tickets()
+        elif n == '7':
+            pass
+        elif n == '8':
+            cancel_bookings()
 
     print("\nThankyou!\n")
 

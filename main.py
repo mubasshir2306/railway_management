@@ -9,7 +9,7 @@ def main_menu():
         print(
             "\nPress 1 ==> Check Trains Between Stations.\n"
             "Press 2 ==> Get Train Information by Train Number.\n"
-            "Press 3 ==> Check Fares From Starting Station to Destination Station.\n"
+            "Press 3 ==> Check Fares From Boarding Station to Destination Station.\n"
             "Press 4 ==> Search Station Code by City Name.\n"
             "Press 5 ==> SignUp/Create New User.\n"
             "Press 6 ==> Book Tickets.\n"
@@ -18,7 +18,7 @@ def main_menu():
             "Press X ==> Close\n"
             )
 
-        n = input("Enter your choice: ")
+        n = input("Enter Your Choice: ")
 
         if n == '1':
             find_all_trains()

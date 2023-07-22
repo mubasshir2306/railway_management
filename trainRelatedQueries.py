@@ -6,9 +6,9 @@ from utils import check_train_number, check_if_station_code_exists, check_statio
 
 def find_all_trains():
 
-    start = check_if_station_code_exists('Starting')
+    start = check_if_station_code_exists('Boarding')
     end = check_if_station_code_exists('Destination')
-    print(f"Finding all trains from {start} to {end}...")
+    print(f"Finding All Trains From {start} To {end}...")
     time.sleep(1)
     ans = database.show_all_trains(start, end)
     if ans:
@@ -18,8 +18,8 @@ def find_all_trains():
                               tablefmt='heavy_outline') + '\n'
               )
     else:
-        print(f"\nSorry, No trains found connecting '{start}' and '{end}'. "
-              f"Please check station codes or search for trains from different stations.\n")
+        print(f"\nSorry, No Trains Found Connecting '{start}' and '{end}'. "
+              f"Please check Station Codes or search for Trains from Different Stations.\n")
 
 
 def get_train_info_by_train_no():
@@ -32,7 +32,7 @@ def get_train_info_by_train_no():
                               tablefmt='heavy_outline') + '\n'
               )
     else:
-        print("\nEnter a correct train number!\n")
+        print("\nEnter a Correct Train Number!\n")
 
 
 def show_fares():
@@ -43,7 +43,7 @@ def show_fares():
     if exists:
         fares = database.get_fares(train_no, start, end)
         if fares:
-            print(f"The fares for different classes for Train Number: '{train_no}' are: ")
+            print(f"The Fares for Different Classes for Train Number: '{train_no}' are: ")
             print('\n' + tabulate(fares,
                                   headers=["Train No.", "Train Name", "First AC", "Second AC", "Third AC", "Sleeper"],
                                   tablefmt='heavy_outline') + '\n'
@@ -53,7 +53,7 @@ def show_fares():
 
 
 def get_station_code():
-    city_name = input("Enter the city name: ")
+    city_name = input("Enter The City Name: ")
     station_code = database.get_station_code(city_name)
     if station_code:
         print('\n' + tabulate(station_code,
@@ -61,7 +61,7 @@ def get_station_code():
                               tablefmt='heavy_outline') + '\n'
               )
     else:
-        print("\nNo station found. Please check the spelling or search the web.\n")
+        print("\nNo Station Found. Please check the spelling or search the web.\n")
 
 
 def check_if_route_exists(train_no, start_station_code, end_station_code):

@@ -98,7 +98,7 @@ def check_name():
         fullname = input("Enter your Full Name: ")
         match = string.ascii_letters + '.' + ' '
         if not all([x in match for x in fullname]):
-            print("Please enter a valid Name!")
+            print("Please enter a Valid Name!")
         elif len(fullname) > 40:
             print("Name too long!")
         else:
@@ -115,7 +115,7 @@ def check_age():
             continue
         else:
             if age < 18:
-                print("You must be at-least 18 years old! ")
+                print("You must at-least be 18 Years Old! ")
             elif age > 100:
                 print("Maximum allowed age is 100 years!")
             else:
@@ -129,7 +129,7 @@ def check_sex():
             sex = sex.upper()
             return sex
         else:
-            print("Please enter one of the given options: M/F/OTH ")
+            print("Please enter one of the given options (M/F/OTH): ")
 
 
 def check_train_number():
@@ -156,7 +156,7 @@ def check_if_station_code_exists(location: str):
         field = 'station_code'
         exists = database.check_if_exists(table, field, code)
         if not exists:
-            print("Enter a valid Station Code!")
+            print("Enter a Valid Station Code!")
         else:
             return code
 
@@ -166,7 +166,7 @@ def check_station_code_with_train_no(train_no, location: str = None):
         try:
             station_code = str(check_if_station_code_exists(location))
         except ValueError:
-            print("Please enter a valid Station Code!")
+            print("Please enter a Valid Station Code!")
             continue
         else:
             table = 'train_routes'
@@ -215,13 +215,13 @@ def get_class():
             class_name = class_name.upper().strip()
             return class_name
         else:
-            print("Please Enter the Correct Class(1AC/2AC/3AC/SL): ")
+            print("Please Enter the Correct Class (1AC/2AC/3AC/SL): ")
 
 
 def check_date(date):
     today = datetime.date.today()
     d1 = today.strftime("%d-%m-%Y")
-    max_date = today + datetime.timedelta(days=60)
+    max_date = today + datetime.timedelta(days=90)
     d2 = max_date.strftime("%d-%m-%Y")
 
     while date < datetime.datetime.strptime(d1, "%d-%m-%Y").date() or \

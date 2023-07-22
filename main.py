@@ -1,5 +1,5 @@
 from trainRelatedQueries import find_all_trains, get_train_info_by_train_no, show_fares, get_station_code
-from userFunctions import create_user, book_tickets, cancel_bookings
+from userFunctions import create_user, book_tickets, show_booking, cancel_bookings
 
 
 def main_menu():
@@ -7,16 +7,15 @@ def main_menu():
     n = "no_op"
     while n.upper().strip() != 'X':
         print(
-            "\nENTER THE NUMBER NEXT TO THE GIVEN OPTIONS TO ACCESS THEM:\n"
-            "1. Check trains between stations.\n"
-            "2. Get train info by Train Number.\n"
-            "3. Check Fares from starting station to destination station.\n"
-            "4. Search station code by city name.\n"
-            "5. SignUp/Create New User.\n"
-            "6. Book Tickets.\n"
-            "7. Show Bookings.\n"
-            "8. Cancel Bookings.\n"
-            "X. Close\n"
+            "\nPress 1 ==> Check trains between stations.\n"
+            "Press 2 ==> Get train info by Train Number.\n"
+            "Press 3 ==> Check Fares from starting station to destination station.\n"
+            "Press 4 ==> Search station code by city name.\n"
+            "Press 5 ==> SignUp/Create New User.\n"
+            "Press 6 ==> Book Tickets.\n"
+            "Press 7 ==> Show Bookings.\n"
+            "Press 8 ==> Cancel Bookings.\n"
+            "Press X ==> Close\n"
             )
 
         n = input("Enter your choice: ")
@@ -35,7 +34,7 @@ def main_menu():
         elif n == '6':
             book_tickets()
         elif n == '7':
-            pass
+            show_booking()
         elif n == '8':
             cancel_bookings()
 

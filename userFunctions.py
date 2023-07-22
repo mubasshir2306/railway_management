@@ -40,7 +40,7 @@ def book_tickets():
             "\nPress 1 to Check Trains.\n"
             "Press 2 to Check Fares.\n"
             "Press 3 to know Station Codes.\n"
-            "Press X to continue to booking."
+            "Press X ==> Continue to Booking."
         )
         n = input("Enter your choice: ")
         if n == '1':
@@ -80,11 +80,38 @@ def book_tickets():
             print(f"\nTicket Booked!")
             print(
                 f"Your PNR Number is: {pnr}\n"
-                "Please note down your PNR Number as it is used to Check Bookings and Delete Bookings."
+                "Please note down your PNR Number as it is used to Check Bookings and Cancel Bookings."
                 )
     else:
         print("Cannot Proceed with Booking. Maximum Booking Limit Reached!")
         return
+
+
+def show_booking():
+    userid = check_userid(shouldnot=True)
+    check_mobileno(userid=userid, shouldnot=True)
+    pnr = check_pnr()
+    exists = database.check_if_exists('bookings', 'pnr', pnr, and_where={'userid': userid})
+    if not exists:
+        print(f"UserID: '{userid}' does Not have a booking with PNR Number: '{pnr}'")
+        return
+    else:
+        res = database.show_booking(userid, pnr)
+        if not res:
+            print("No Bookings Found!")
+        else:
+            print(
+                f"\nTicket Number:   {res[0][0]}\n"
+                f"PNR Number:      {res[0][2]}\n"
+                f"Train Number:    {res[0][3]}\n"
+                f"Train Name:      {res[0][14]}\n"
+                f"From:            {res[0][4]} To {res[0][5]}\n"
+                f"Date of Journey: {res[0][6]}\n"
+                f"Departure Time:  {res[0][7]}\n"
+                f"Arrival Time:    {res[0][8]}\n"
+                "Passengers Details:"
+            )
+            
 
 
 def cancel_bookings():

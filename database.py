@@ -200,6 +200,20 @@ def book_ticket(ticket_no, userid, pnr, train_no, start_st_code, dest_st_code, d
                   arrival_time, passenger_name, passenger_age, passenger_sex, class_name, status))
 
 
+def show_booking(userid, pnr):
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                    SELECT b.*, ti.train_name FROM bookings AS b
+                    INNER JOIN train_info as ti
+                    ON b.train_no = ti.train_no
+                    WHERE b.userid = %s AND b.pnr = %s AND ti.train_no = b.train_no;
+                    """, (userid, pnr))
+            res = cur.fetchall()
+            if res:
+                return res
+
+
 def cancel_booking(userid, pnr):
     with get_connection() as conn:
         with conn.cursor() as cur:

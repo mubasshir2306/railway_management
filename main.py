@@ -7,10 +7,10 @@ def main_menu():
     n = "no_op"
     while n.upper().strip() != 'X':
         print(
-            "\nPress 1 ==> Check trains between stations.\n"
-            "Press 2 ==> Get train info by Train Number.\n"
-            "Press 3 ==> Check Fares from starting station to destination station.\n"
-            "Press 4 ==> Search station code by city name.\n"
+            "\nPress 1 ==> Check Trains Between Stations.\n"
+            "Press 2 ==> Get Train Information by Train Number.\n"
+            "Press 3 ==> Check Fares From Starting Station to Destination Station.\n"
+            "Press 4 ==> Search Station Code by City Name.\n"
             "Press 5 ==> SignUp/Create New User.\n"
             "Press 6 ==> Book Tickets.\n"
             "Press 7 ==> Show Bookings.\n"
@@ -21,7 +21,6 @@ def main_menu():
         n = input("Enter your choice: ")
 
         if n == '1':
-            print("Choice 1 selected")
             find_all_trains()
         elif n == '2':
             get_train_info_by_train_no()

@@ -1,5 +1,6 @@
 import database
 from psycopg2 import Error
+from tabulate import tabulate
 from trainRelatedQueries import find_all_trains, show_fares, get_station_code, check_if_route_exists
 from utils import check_mobileno, check_userid, check_name, check_age, check_sex, check_train_number, \
     check_station_code_with_train_no, generate_pnr, generate_ticket_no, get_date, get_class, check_date, \
@@ -7,7 +8,6 @@ from utils import check_mobileno, check_userid, check_name, check_age, check_sex
 
 
 def create_user():
-
     userid = check_userid()
     fullname = check_name()
     mobileno = check_mobileno()
@@ -22,7 +22,6 @@ def create_user():
 
 
 def book_tickets():
-
     print(
         "\nSome Important Information Regarding Ticket Bookings:\n"
         "- You must be a Registered User.\n"
@@ -81,7 +80,7 @@ def book_tickets():
             print(
                 f"Your PNR Number is: {pnr}\n"
                 "Please note down your PNR Number as it is used to Check Bookings and Cancel Bookings."
-                )
+            )
     else:
         print("Cannot Proceed with Booking. Maximum Booking Limit Reached!")
         return
@@ -100,18 +99,29 @@ def show_booking():
         if not res:
             print("No Bookings Found!")
         else:
-            print(
-                f"\nTicket Number:   {res[0][0]}\n"
-                f"PNR Number:      {res[0][2]}\n"
-                f"Train Number:    {res[0][3]}\n"
-                f"Train Name:      {res[0][14]}\n"
-                f"From:            {res[0][4]} To {res[0][5]}\n"
-                f"Date of Journey: {res[0][6]}\n"
-                f"Departure Time:  {res[0][7]}\n"
-                f"Arrival Time:    {res[0][8]}\n"
-                "Passengers Details:"
-            )
-            
+            print('\n'
+                  f"Ticket Number:   {res[0][0]}\n"
+                  f"PNR Number:      {res[0][2]}\n"
+                  f"Train Number:    {res[0][3]}\n"
+                  f"Train Name:      {res[0][14]}\n"
+                  f"From:            {res[0][4]} To {res[0][5]}\n"
+                  f"Date of Journey: {res[0][6]}\n"
+                  f"Departure Time:  {res[0][7]}\n"
+                  f"Arrival Time:    {res[0][8]}\n"
+                  "Passengers Details:"
+                  )
+            # print(res)
+            passengers = []
+            for i in range(len(res)):
+                single_pass = []
+                for j in range(5):
+                    single_pass.append(res[i][j + 9])
+                passengers.append(single_pass)
+            # print(passengers)
+            print(tabulate(passengers,
+                           headers=["Name", "Age", "Sex", "Class", "Status"],
+                           tablefmt='simple_outline') + '\n'
+                  )
 
 
 def cancel_bookings():
@@ -129,4 +139,3 @@ def cancel_bookings():
             print(f"\nSuccessfully Cancelled Booking For PNR Number: '{pnr}'")
         else:
             print("\nCancellation Aborted!")
-

@@ -207,7 +207,8 @@ def show_booking(userid, pnr):
                     SELECT b.*, ti.train_name FROM bookings AS b
                     INNER JOIN train_info as ti
                     ON b.train_no = ti.train_no
-                    WHERE b.userid = %s AND b.pnr = %s AND ti.train_no = b.train_no;
+                    WHERE b.userid = %s AND b.pnr = %s AND ti.train_no = b.train_no
+                    ORDER BY b.passenger_age DESC;
                     """, (userid, pnr))
             res = cur.fetchall()
             if res:

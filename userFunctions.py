@@ -151,6 +151,7 @@ def show_booking():
                            headers=["Name", "Age", "Sex", "Class", "Status"],
                            tablefmt='simple_outline')
                   )
+            print('\n')
             time.sleep(3)
 
 

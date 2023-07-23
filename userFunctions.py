@@ -38,9 +38,9 @@ def book_tickets():
     n = "no_op"
     while n.upper().strip() != 'X':
         print(
-            "\nPress 1 to Check Trains.\n"
-            "Press 2 to Check Fares.\n"
-            "Press 3 to know Station Codes.\n"
+            "\nPress 1 ==> Check Trains.\n"
+            "Press 2 ==> Check Fares.\n"
+            "Press 3 ==> know Station Codes.\n"
             "Press X ==> CONTINUE TO BOOKING."
         )
         n = input("Enter Your Choice: ")
@@ -91,6 +91,24 @@ def book_tickets():
 def show_booking():
     userid = check_userid(shouldnot=True)
     check_mobileno(userid=userid, shouldnot=True)
+    print(f"Press ==> 1: To Get All PNR Number for UserID: '{userid}'\n"
+          "Press ==> 2: If You Know The PNR Number for the Booking and Continue to Show Booking.")
+    while True:
+        n = input("Enter Your Choice: ")
+        if n == '1':
+            res = database.get_all_pnr(userid)
+            if not res:
+                print(f"UserID: '{userid}' Does Not Have Any Bookings!")
+                return
+            else:
+                print(f"All PNR Number for UserId: '{userid}' Are: ")
+                for r in res:
+                    print(r[0])
+                break
+        elif n == '2':
+            break
+        else:
+            print("Please Enter A Valid Response!")
     pnr = check_pnr()
     exists = database.check_if_exists('bookings', 'pnr', pnr, and_where={'userid': userid})
     if not exists:

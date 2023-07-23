@@ -106,13 +106,16 @@ def check_name():
             return fullname
 
 
-def check_age():
+def check_age(passenger: bool = False):
     while True:
         try:
             age = int(input("Enter your age: "))
         except ValueError:
             print("Please Enter a Valid Age. ")
             continue
+        if passenger:
+            if age > 0 or age < 120:
+                return age
         else:
             if age < 18:
                 print("You must at-least be 18 Years Old! ")
@@ -252,7 +255,7 @@ def get_num_pass():
 def get_passenger_details(num):
     print(f"Enter Details of Passenger {num+1}: ")
     name = check_name()
-    age = check_age()
+    age = check_age(passenger=True)
     sex = check_sex()
     return name, age, sex
 

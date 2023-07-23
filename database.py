@@ -215,6 +215,15 @@ def show_booking(userid, pnr):
                 return res
 
 
+def get_all_pnr(userid):
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT DISTINCT pnr from bookings WHERE userid = %s;", (userid,))
+            res = cur.fetchall()
+            if res:
+                return res
+
+
 def cancel_booking(userid, pnr):
     with get_connection() as conn:
         with conn.cursor() as cur:

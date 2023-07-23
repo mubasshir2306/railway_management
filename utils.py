@@ -116,6 +116,8 @@ def check_age(passenger: bool = False):
         if passenger:
             if age > 0 or age < 120:
                 return age
+            else:
+                print("Enter a Valid Age between 0 and 120 Year!")
         else:
             if age < 18:
                 print("You must at-least be 18 Years Old! ")

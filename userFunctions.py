@@ -53,8 +53,6 @@ def book_tickets():
             get_station_code()
         elif n == '4':
             create_user()
-        # else:
-        #     print("Please Enter A Valid Option!")
 
     userid = check_userid(shouldnot=True)
     if database.check_max_bookings(userid) < 5:

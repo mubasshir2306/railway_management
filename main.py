@@ -3,41 +3,41 @@ from userFunctions import create_user, book_tickets, show_booking, cancel_bookin
 
 
 def main_menu():
-    print("Welcome to Railway Booking Manager!\n")
+    print("\n\033[1;35mWelcome to Railway Booking Manager!\033[0m")
     n = "no_op"
     while n.upper().strip() != 'X':
         print(
-            "\nPress 1 ==> Check Trains Between Stations.\n"
-            "Press 2 ==> Get Train Information by Train Number.\n"
-            "Press 3 ==> Check Fares From Boarding Station to Destination Station.\n"
-            "Press 4 ==> Search Station Code by City Name.\n"
-            "Press 5 ==> SignUp/Create New User.\n"
-            "Press 6 ==> Book Tickets.\n"
-            "Press 7 ==> Show Bookings.\n"
-            "Press 8 ==> Cancel Bookings.\n"
+            "Press 1 ==> Book Tickets.\n"
+            "Press 2 ==> Show Bookings.\n"
+            "Press 3 ==> Sign Up (OR) Create New User.\n"
+            "Press 4 ==> Cancel Bookings.\n"
+            "Press 5 ==> Check Trains Between Stations.\n"
+            "Press 6 ==> Check Fares From Boarding Station to Destination Station.\n"
+            "Press 7 ==> Search Station Code by City Name.\n"
+            "Press 8 ==> Get Train Information by Train Number.\n"
             "Press X ==> Close\n"
             )
 
         n = input("Enter Your Choice: ")
 
         if n == '1':
-            find_all_trains()
-        elif n == '2':
-            get_train_info_by_train_no()
-        elif n == '3':
-            show_fares()
-        elif n == '4':
-            get_station_code()
-        elif n == '5':
-            create_user()
-        elif n == '6':
             book_tickets()
-        elif n == '7':
+        elif n == '2':
             show_booking()
-        elif n == '8':
+        elif n == '3':
+            create_user()
+        elif n == '4':
             cancel_bookings()
+        elif n == '5':
+            find_all_trains()
+        elif n == '6':
+            show_fares()
+        elif n == '7':
+            get_station_code()
+        elif n == '8':
+            get_train_info_by_train_no()
 
-    print("\nThankyou!\n")
+    print("\n\033[1;35mThankyou, Have A Great Day!\033[0m")
 
 
 if __name__ == "__main__":

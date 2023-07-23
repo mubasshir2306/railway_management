@@ -18,9 +18,9 @@ def create_user():
 
     try:
         database.create_user(userid, fullname, mobileno, age, sex)
-        print("\nUser Created Successfully!\n")
+        print("\n\033[1;32mUser Created Successfully!\033[0m\n")
     except Error:
-        print(f"\nAn error occurred, Please try again later. \n")
+        print(f"\n\033[1;31mAn error occurred, Please try again later.\033[0m\n")
 
 
 def book_tickets():
@@ -32,7 +32,7 @@ def book_tickets():
         "- A Maximum of 5 Passengers can be Booked in One Ticket.\n"
         "- Please make sure to know Train Number, Boarding Station Code and Destination "
         "Station Code before proceeding to Bookings.\n"
-        "\nFollowing Options might help you:"
+        "\nFollowing Options Might Help You:"
     )
 
     n = "no_op"
@@ -40,16 +40,21 @@ def book_tickets():
         print(
             "\nPress 1 ==> Check Trains.\n"
             "Press 2 ==> Check Fares.\n"
-            "Press 3 ==> know Station Codes.\n"
-            "Press X ==> CONTINUE TO BOOKING."
+            "Press 3 ==> Know Station Codes.\n"
+            "Press 4 ==> To Sign Up (OR) Create New User.\n"
+            "\033[1;34mPress X ==> CONTINUE TO BOOKING.\033[0m"
         )
         n = input("Enter Your Choice: ")
         if n == '1':
             find_all_trains()
-        if n == '2':
+        elif n == '2':
             show_fares()
-        if n == '3':
+        elif n == '3':
             get_station_code()
+        elif n == '4':
+            create_user()
+        # else:
+        #     print("Please Enter A Valid Option!")
 
     userid = check_userid(shouldnot=True)
     if database.check_max_bookings(userid) < 5:
@@ -76,15 +81,15 @@ def book_tickets():
                 database.book_ticket(ticket_no, userid, pnr, train_no, start_station_code, end_station_code, date,
                                      departure_time, arrival_time, passenger[0], passenger[1], passenger[2], class_name,
                                      status)
-                print(f"Passenger {num + 1} Added Successfully!")
+                print(f"\033[1;32mPassenger {num + 1} Added Successfully!\033[0m")
 
-            print(f"\nTicket Booked!")
+            print(f"\n\033[1;32mTicket Booked!\033[0m")
             print(
-                f"Your PNR Number is: {pnr}\n"
-                "Please Note Down Your PNR Number as it is Used to Check Bookings and Cancel Bookings."
+                f"Your PNR Number is: \033[1;33m{pnr}\033[0m\n"
+                "Please Note Down Your PNR Number as it is Used to Check Bookings and Cancel Bookings.\n"
             )
     else:
-        print("Cannot Proceed with Booking. Maximum Booking Limit Reached!")
+        print("\033[1;31mCannot Proceed with Booking. Maximum Booking Limit Reached!\033[0m")
         return
 
 
@@ -98,7 +103,7 @@ def show_booking():
         if n == '1':
             res = database.get_all_pnr(userid)
             if not res:
-                print(f"UserID: '{userid}' Does Not Have Any Bookings!")
+                print(f"\033[1;31mUserID: '{userid}' Does Not Have Any Bookings!\033[0m")
                 return
             else:
                 print(f"All PNR Number for UserId: '{userid}' Are: ")
@@ -108,21 +113,26 @@ def show_booking():
         elif n == '2':
             break
         else:
-            print("Please Enter A Valid Response!")
+            print("\033[1;33mPlease Enter A Valid Response!\033[0m")
     pnr = check_pnr()
     exists = database.check_if_exists('bookings', 'pnr', pnr, and_where={'userid': userid})
     if not exists:
-        print(f"UserID: '{userid}' Does Not Have a Booking With PNR Number: '{pnr}'")
+        print(f"\033[1;31mUserID: '{userid}' Does Not Have a Booking With PNR Number: '{pnr}'\033[0m")
         return
     else:
         res = database.show_booking(userid, pnr)
         if not res:
-            print("No Bookings Found!")
+            print("\033[1;31mNo Bookings Found!\033[0m")
         else:
             date = res[0][6]
             d1 = datetime.datetime.strptime(date, "%Y-%m-%d").date()
             d2 = d1.strftime("%d-%m-%Y")
-            print('\n'
+            now = datetime.datetime.today().date()
+            print('\n')
+            if d1 < now:
+                print("\033[1;31mThis Booking Has Expired!\033[0m")
+            print(
+                  "\033[4mTICKET DETAILS\033[0m:\n"
                   f"Ticket Number:   {res[0][0]}\n"
                   f"PNR Number:      {res[0][2]}\n"
                   f"Train Number:    {res[0][3]}\n"
@@ -152,14 +162,14 @@ def cancel_bookings():
     pnr = check_pnr()
     exists = database.check_if_exists('bookings', 'pnr', pnr, and_where={'userid': userid})
     if not exists:
-        print(f"UserID: '{userid}' Does Not Have a Booking With PNR Number: '{pnr}'")
+        print(f"\033[1;31mUserID: '{userid}' Does Not Have a Booking With PNR Number: '{pnr}'\033[0m")
         return
     else:
-        res = input("Are Your Sure You Want To Cancel This Booking? (Y/N): ")
+        res = input("\033[1;33mAre Your Sure You Want To Cancel This Booking? (Y/N):\033[0m ")
         if res.strip().upper() == 'Y':
             database.cancel_booking(userid, pnr)
-            print(f"\nSuccessfully Cancelled Booking For PNR Number: '{pnr}'")
+            print(f"\n\033[1;32mSuccessfully Cancelled Booking For PNR Number: '{pnr}'\033[0m")
         elif res.strip().upper() == 'N':
-            print("\nCancellation Aborted!")
+            print("\n\033[1;32mCancellation Aborted!\033[0m")
         else:
-            print("Enter A Valid Option (Y/N): ")
+            print("\033[1;33mEnter A Valid Option (Y/N):\033[0m ")

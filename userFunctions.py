@@ -10,6 +10,17 @@ from utils import check_mobileno, check_userid, check_name, check_age, check_sex
 
 
 def create_user():
+    print("\n\033[1;35;4mWelcome To The 'Sign Up' Section!\033[0m")
+    n = "no_op"
+    while n.upper().strip() != 'X':
+        print(
+            "\033[1;34mPress X ==> CONTINUE TO CREATE USER.\033[0m\n"
+            "\033[1;31mPress E ==> Return To Main Menu.\033[0m\n"
+        )
+        n = input("Enter Your Choice: ")
+        if n.strip().upper() == 'E':
+            return
+
     userid = check_userid()
     fullname = check_name()
     mobileno = check_mobileno()
@@ -25,34 +36,37 @@ def create_user():
 
 def book_tickets():
     print(
-        "\nSome Important Information Regarding Ticket Bookings:\n"
-        "- You Must be a Registered User.\n"
+        "\n\033[1;33;4mSome Important Information Regarding Ticket Booking:\033[0m\n"
+        "\033[1m- You Must be a Registered User.\n"
         "- A Registered User can Book Tickets for a Maximum of 5 Different Journeys.\n"
         "- A Ticket can be Booked 3 Months before the Actual Trip.\n"
         "- A Maximum of 5 Passengers can be Booked in One Ticket.\n"
         "- Please make sure to know Train Number, Boarding Station Code and Destination "
-        "Station Code before proceeding to Bookings.\n"
-        "\nFollowing Options Might Help You:"
+        "Station Code before proceeding to Bookings.\033[0m\n"
+        "\n\033[4mFollowing Options Might Help You:\033[0m"
     )
 
     n = "no_op"
     while n.upper().strip() != 'X':
         print(
-            "\nPress 1 ==> Check Trains.\n"
+            "Press 1 ==> Check Trains.\n"
             "Press 2 ==> Check Fares.\n"
             "Press 3 ==> Know Station Codes.\n"
             "Press 4 ==> To Sign Up (OR) Create New User.\n"
-            "\033[1;34mPress X ==> CONTINUE TO BOOKING.\033[0m"
+            "\033[1;34mPress X ==> CONTINUE TO BOOKING.\033[0m\n"
+            "\033[1;31mPress E ==> Return To Main Menu.\033[0m\n"
         )
         n = input("Enter Your Choice: ")
-        if n == '1':
+        if n.strip() == '1':
             find_all_trains()
-        elif n == '2':
+        elif n.strip() == '2':
             show_fares()
-        elif n == '3':
+        elif n.strip() == '3':
             get_station_code()
-        elif n == '4':
+        elif n.strip() == '4':
             create_user()
+        elif n.strip().upper() == 'E':
+            return
 
     userid = check_userid(shouldnot=True)
     if database.check_max_bookings(userid) < 5:
@@ -87,11 +101,22 @@ def book_tickets():
                 "Please Note Down Your PNR Number as it is Used to Check Bookings and Cancel Bookings.\n"
             )
     else:
-        print("\033[1;31mCannot Proceed with Booking. Maximum Booking Limit Reached!\033[0m")
+        print("\033[1;31mCannot Proceed with Booking. Maximum Booking Limit Reached!\033[0m\n")
         return
 
 
 def show_booking():
+    print("\n\033[1;35;4mWelcome To The 'Show Booking' Section!\033[0m")
+    n = "no_op"
+    while n.upper().strip() != 'X':
+        print(
+            "\033[1;34mPress X ==> CONTINUE TO SEARCH FOR A BOOKING.\033[0m\n"
+            "\033[1;31mPress E ==> Return To Main Menu.\033[0m\n"
+        )
+        n = input("Enter Your Choice: ")
+        if n.strip().upper() == 'E':
+            return
+
     userid = check_userid(shouldnot=True)
     check_mobileno(userid=userid, shouldnot=True)
     print(f"Press ==> 1: To Get All PNR Number for UserID: '{userid}'\n"
@@ -156,6 +181,17 @@ def show_booking():
 
 
 def cancel_bookings():
+    print("\n\033[1;35;4mWelcome To The 'Cancel Booking' Section!\033[0m")
+    n = "no_op"
+    while n.upper().strip() != 'X':
+        print(
+            "\033[1;34mPress X ==> CONTINUE TO CANCEL A BOOKING.\033[0m\n"
+            "\033[1;31mPress E ==> Return To Main Menu.\033[0m\n"
+        )
+        n = input("Enter Your Choice: ")
+        if n.strip().upper() == 'E':
+            return
+
     userid = check_userid(shouldnot=True)
     check_mobileno(userid=userid, shouldnot=True)
     pnr = check_pnr()

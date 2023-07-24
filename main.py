@@ -7,7 +7,8 @@ def main_menu():
     n = "no_op"
     while n.upper().strip() != 'X':
         print(
-            "Press 1 ==> Book Tickets.\n"
+            "\n\033[1;36;4mMAIN MENU\033[0m\n"
+            "\033[1mPress 1 ==> Book Tickets.\n"
             "Press 2 ==> Show Bookings.\n"
             "Press 3 ==> Sign Up (OR) Create New User.\n"
             "Press 4 ==> Cancel Bookings.\n"
@@ -15,10 +16,10 @@ def main_menu():
             "Press 6 ==> Check Fares From Boarding Station to Destination Station.\n"
             "Press 7 ==> Search Station Code by City Name.\n"
             "Press 8 ==> Get Train Information by Train Number.\n"
-            "Press X ==> Close\n"
+            "\033[1;31mPress X ==> Close\033[0m\n"
             )
 
-        n = input("Enter Your Choice: ")
+        n = input("\033[1mEnter Your Choice: \033[0m")
 
         if n == '1':
             book_tickets()

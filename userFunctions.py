@@ -10,7 +10,20 @@ from utils import check_mobileno, check_userid, check_name, check_age, check_sex
 
 
 def create_user():
-    print("\n\033[1;35;4mWelcome To The 'Sign Up' Section!\033[0m")
+    print("\n\033[1;35;4mWelcome To The 'Sign Up' Section!\033[0m\n")
+    print(
+        "\033[1mCreate a User Profile by entering a UserID, your Full Name and your Mobile Number.\n"
+        "You Must At-least be 18 Years Old to Create a User Profile."
+        "A User Profile is Required for the following features:\n"
+        "- Book Tickets.\n"
+        "- Check All Bookings.\n"
+        "- Cancel A Booking.\033[0m\n"
+        "\n\033[1;33;4mSome Important Points Regarding UserID:\033[0m\n"
+        "\033[1m- A UserID must be between 6 to 20 characters long.\n"
+        "- A UserID must only contain Alphabets, Numbers and Underscore.\n"
+        "- A UserID must start with a letter.\n"
+        "- A UserID should not contain any spaces.\033[0m\n"
+    )
     n = "no_op"
     while n.upper().strip() != 'X':
         print(
@@ -35,14 +48,15 @@ def create_user():
 
 
 def book_tickets():
+    print("\n\033[1;35;4mWelcome To The 'Ticket Booking' Section!\033[0m\n")
     print(
         "\n\033[1;33;4mSome Important Information Regarding Ticket Booking:\033[0m\n"
         "\033[1m- You Must be a Registered User.\n"
         "- A Registered User can Book Tickets for a Maximum of 5 Different Journeys.\n"
         "- A Ticket can be Booked 3 Months before the Actual Trip.\n"
         "- A Maximum of 5 Passengers can be Booked in One Ticket.\n"
-        "- Please make sure to know Train Number, Boarding Station Code and Destination "
-        "Station Code before proceeding to Bookings.\033[0m\n"
+        "- Please make sure to know the 'Train Number', 'Boarding Station Code' and 'Destination "
+        "Station Code' before proceeding to Bookings.\033[0m\n"
         "\n\033[4mFollowing Options Might Help You:\033[0m"
     )
 
@@ -106,7 +120,14 @@ def book_tickets():
 
 
 def show_booking():
-    print("\n\033[1;35;4mWelcome To The 'Show Booking' Section!\033[0m")
+    print("\n\033[1;35;4mWelcome To The 'Show Booking' Section!\033[0m\n")
+    print(
+        "\033[1m- Check All the Bookings made by a Registered User.\n"
+        "- Verify yourself my logging in using your UserID and Mobile Number registered with the UserID.\n"
+        "- Bookings can be seen by entering the PNR Number of the Booking.\n"
+        "- If you do not remember the PNR Number of the booking, You can Find all the PNR Numbers "
+        "associated with your UserID.\033[0m\n"
+    )
     n = "no_op"
     while n.upper().strip() != 'X':
         print(
@@ -129,9 +150,9 @@ def show_booking():
                 print(f"\033[1;31mUserID: '{userid}' Does Not Have Any Bookings!\033[0m")
                 return
             else:
-                print(f"All PNR Number for UserId: '{userid}' Are: ")
+                print(f"\033[1mAll PNR Number for UserId: '{userid}' are:\033[0m")
                 for r in res:
-                    print(r[0])
+                    print("\033[33m"+r[0]+"\033[0m")
                 break
         elif n == '2':
             break
@@ -181,7 +202,13 @@ def show_booking():
 
 
 def cancel_bookings():
-    print("\n\033[1;35;4mWelcome To The 'Cancel Booking' Section!\033[0m")
+    print("\n\033[1;35;4mWelcome To The 'Cancel Booking' Section!\033[0m\n")
+    print(
+        "\033[1m- Verify yourself by logging in using your UserID and Mobile Number registered with the UserID.\n"
+        "- You must know the PNR Number of the Booking before proceeding to Cancel the Booking.\n"
+        "- There is no option inside to Show All PNR Numbers for the entered UserID.\n"
+        "\033[1;33m- Once A Booking Has Been Cancelled, It Cannot be Undone and It Cannot Be Accessed Again.\033[0m\n"
+    )
     n = "no_op"
     while n.upper().strip() != 'X':
         print(

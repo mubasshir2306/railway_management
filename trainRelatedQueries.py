@@ -5,7 +5,12 @@ from utils import check_train_number, check_if_station_code_exists, check_statio
 
 
 def find_all_trains():
-    print("\n\033[1;35;4mWelcome To The 'Search All Trains' Section!\033[0m")
+    print("\n\033[1;35;4mWelcome To The 'Search All Trains' Section!\033[0m\n")
+    print(
+        "\033[1m- Find All Available Trains from The Boarding Station to The Destination Station.\n"
+        "- You Must Know The Boarding Station Code and The Destination Station Code Beforehand.\n"
+        "- Search by Entering The Boarding Station Code and The Destination Station Code.\033[0m\n"
+    )
     n = "no_op"
     while n.upper().strip() != 'X':
         print(
@@ -33,7 +38,12 @@ def find_all_trains():
 
 
 def get_train_info_by_train_no():
-    print("\n\033[1;35;4mWelcome To The 'Get Train Information' Section!\033[0m")
+    print("\n\033[1;35;4mWelcome To The 'Get Train Information' Section!\033[0m\n")
+    print(
+        "\033[1m- Find Information About A Specific Train.\n"
+        "- Gives Information on Train Number, Train Name, Source Station Name and Destination Station Name.\n"
+        "- Search by Entering The Train Number.\033[0m\n"
+    )
     n = "no_op"
     while n.upper().strip() != 'X':
         print(
@@ -57,7 +67,14 @@ def get_train_info_by_train_no():
 
 
 def show_fares():
-    print("\n\033[1;35;4mWelcome To The 'Show Fares' Section!\033[0m")
+    print("\n\033[1;35;4mWelcome To The 'Show Fares' Section!\033[0m\n")
+    print(
+        "\033[1m- Find Fares For A Specific Train from The Boarding Station to The Destination Station.\n"
+        "- You Must Know The Train Number, Boarding Station Code and The Destination Station Code Beforehand.\n"
+        "- Search by Entering The Train Number, Boarding Station Code and The Destination Station Code.\n"
+        "- Fares are Shown for 4-Different-Classes: First AC(1AC), Second AC(2AC), Third AC(3AC) "
+        "and Sleeper(SL).\033[0m\n"
+    )
     n = "no_op"
     while n.upper().strip() != 'X':
         print(
@@ -85,7 +102,12 @@ def show_fares():
 
 
 def get_station_code():
-    print("\n\033[1;35;4mWelcome To The 'Find Station Code' Section!\033[0m")
+    print("\n\033[1;35;4mWelcome To The 'Find Station Code' Section!\033[0m\n")
+    print(
+        "\033[1m- Get Station Code of Your City.\n"
+        "- Search by Entering the Name of Your City (OR) Starting Letters of The City Name\n"
+        "- For Example, To get Station Code for 'Delhi', write: 'delhi' (or) 'del'.\n\033[0m"
+    )
     n = "no_op"
     while n.upper().strip() != 'X':
         print(

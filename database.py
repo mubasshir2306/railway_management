@@ -146,6 +146,17 @@ def get_station_code(station_name: str):
                 return [StationData(*s) for s in res]
 
 
+def show_train_routes(train_no):
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT sn, train_no, station_code, station_name, arrival_time, "
+                        "departure_time, distance FROM train_routes WHERE train_no = %s;",
+                        (train_no,))
+            res = cur.fetchall()
+            if res:
+                return res
+
+
 def create_user(userid, fullname, mobileno, age, sex):
     with get_connection() as conn:
         with conn.cursor() as cur:

@@ -28,8 +28,8 @@ def find_all_trains():
     ans = database.show_all_trains(start, end)
     if ans:
         print('\n' + tabulate(ans,
-                              headers=["Train Number", "Train Name", f"Departure time ({start})",
-                                       f"Arrival time ({end})", f"Distance Between {start} and {end} (KMs)"],
+                              headers=["Train Number", "Train Name", f"Departure Time ({start})",
+                                       f"Arrival Time ({end})", f"Distance Between {start} and {end} (KMs)"],
                               tablefmt='heavy_outline') + '\n'
               )
     else:
@@ -127,6 +127,33 @@ def get_station_code():
               )
     else:
         print("\n\033[1;31mNo Station Found. Please check the spelling or search the web.\033[0m")
+
+
+def get_train_route_chart():
+    print("\n\033[1;35;4mWelcome To The 'Train Route Chart' Section!\033[0m\n")
+    print(
+        "\033[1m- Find Information About Routes Taken By A Specific Train.\n"
+        "- Gives Information About All The Stoppages Of A Specific Train.\n"
+        "- Shows Arrival and Departure Times For Each Stoppage and Distance of Each Station from Source Station.\n"
+        "- Search by Entering The Train Number.\033[0m\n"
+    )
+    n = "no_op"
+    while n.upper().strip() != 'X':
+        print(
+            "\033[1;34mPress X ==> CONTINUE TO GET ROUTE CHART FOR A SPECIFIC TRAIN.\033[0m\n"
+            "\033[1;31mPress E ==> Return To Main Menu.\033[0m\n"
+        )
+        n = input("Enter Your Choice: ")
+        if n.strip().upper() == 'E':
+            return
+
+    train_no = check_train_number()
+    routes = database.show_train_routes(train_no)
+    print('\n' + tabulate(routes,
+                          headers=["Sl. No.", "Train Number", "Station Code", "Station Name", "Arrival Time",
+                                   "Departure Time", "Distance(KMs)"],
+                          tablefmt='heavy_outline') + '\n'
+          )
 
 
 def check_if_route_exists(train_no, start_station_code, end_station_code):

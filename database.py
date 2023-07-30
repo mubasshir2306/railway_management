@@ -8,34 +8,18 @@ def show_all_trains(start: str, destination: str):
         with conn.cursor() as cur:
             cur.execute(
                 """
-                DROP TABLE IF EXISTS starting;
-                DROP TABLE IF EXISTS destination;
-                CREATE TEMPORARY TABLE IF NOT EXISTS starting(
-                    train_no INTEGER,
-                    distance INTEGER,
-                    departure_time TEXT
-                );
-                CREATE TEMPORARY TABLE IF NOT EXISTS destination(
-                    train_no INTEGER,
-                    distance INTEGER,
-                    arrival_time TEXT
-                );
-
-                INSERT INTO starting(train_no, distance, departure_time)
-                SELECT train_no, distance, departure_time FROM train_routes WHERE station_code = %s;
-
-                INSERT INTO destination(train_no, distance, arrival_time)
-                SELECT train_no, distance, arrival_time FROM train_routes WHERE station_code = %s;
-
-                SELECT DISTINCT s.train_no, ti.train_name, s.departure_time, d.arrival_time,(d.distance-s.distance) 
-                AS distance_bw_stations
-                FROM starting AS s
-                INNER JOIN destination AS d
-                ON s.train_no = d.train_no
+                SELECT tr1.train_no, ti.train_name, tr1.departure_time, tr2.arrival_time,
+                tr2.distance - tr1.distance AS distance
+                FROM train_routes AS tr1
+                INNER JOIN train_routes AS tr2
+                ON tr1.train_no = tr2.train_no
                 INNER JOIN train_info AS ti
-                ON s.train_no = ti.train_no
-                WHERE (d.distance - s.distance > 0) 
-                ORDER BY s.train_no;
+                ON tr1.train_no = ti.train_no
+                WHERE tr1.train_no = tr2.train_no
+                AND tr1.station_code = %s
+                AND tr2.station_code = %s
+                AND tr2.distance - tr1.distance > 0
+                ORDER BY train_no
                 """, (start, destination)
             )
             res = cur.fetchall()
@@ -49,34 +33,18 @@ def check_train_from_to_end(train_no, start, destination):
         with conn.cursor() as cur:
             cur.execute(
                 """
-                DROP TABLE IF EXISTS starting;
-                DROP TABLE IF EXISTS destination;
-                CREATE TEMPORARY TABLE IF NOT EXISTS starting(
-                    train_no INTEGER,
-                    distance INTEGER,
-                    departure_time TEXT
-                );
-                CREATE TEMPORARY TABLE IF NOT EXISTS destination(
-                    train_no INTEGER,
-                    distance INTEGER,
-                    arrival_time TEXT
-                );
-
-                INSERT INTO starting(train_no, distance, departure_time)
-                SELECT train_no, distance, departure_time FROM train_routes WHERE station_code = %s;
-
-                INSERT INTO destination(train_no, distance, arrival_time)
-                SELECT train_no, distance, arrival_time FROM train_routes WHERE station_code = %s;
-
-                SELECT DISTINCT s.train_no, ti.train_name, s.departure_time, d.arrival_time,(d.distance-s.distance) 
-                AS distance_bw_stations
-                FROM starting AS s
-                INNER JOIN destination AS d
-                ON s.train_no = d.train_no
+                SELECT tr1.train_no, ti.train_name, tr1.departure_time,
+                tr2.arrival_time, tr2.distance - tr1.distance AS distance
+                FROM train_routes AS tr1
+                INNER JOIN train_routes AS tr2
+                ON tr1.train_no = tr2.train_no
                 INNER JOIN train_info AS ti
-                ON s.train_no = ti.train_no
-                WHERE (d.distance - s.distance > 0) AND s.train_no = %s
-                ORDER BY s.train_no;
+                ON tr1.train_no = ti.train_no
+                WHERE tr1.train_no = tr2.train_no
+                AND tr1.station_code = %s
+                AND tr2.station_code = %s
+                AND tr2.distance - tr1.distance > 0 AND tr1.train_no = %s
+                ORDER BY train_no;
                 """, (start, destination, train_no)
             )
             res = cur.fetchall()
